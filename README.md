@@ -2,6 +2,12 @@
 
 Requests multiple url based on a url
 
+## Install 
+
+```text
+go install github.com/zblurx/hike@latest
+```
+
 ## Usage
 
 ```bash

@@ -282,17 +282,17 @@ func showHelper() {
 		"",
 		"Can do a full permutation too (lot of requests)",
 		"",
-		" -u, --url <url>\t\tSpecify URL",
+		" -u, --url <url>\t\t\tSpecify URL",
 		" -H, --header <header>\t\t\tSpecify header. Can be used multiple times",
 		" -c, --cookies <cookies>\t\tSpecify cookies",
 		" -x, --proxy <proxy>\t\t\tSpecify proxy",
-		" -p, --permute\t\t\tPermute Url path combination",
+		" -p, --permute\t\t\t\tPermute Url path combination",
 		" -k, --insecure\t\t\t\tAllow insecure server connections when using SSL",
 		" -t, --threads <int>\t\t\tNumber of thread. Default 10",
 		" -b, --status-code-blacklist <list>\tComme separated list of status code not to output",
-		" -csv\t\t\tCSV output comma separated. Plus no color automatically",
-		"     --no-color\t\tNo color output, boring",
-		"     --no-request\t\tJust output urls",
+		" -csv\t\t\t\t\tCSV output comma separated. Plus no color automatically",
+		"     --no-color\t\t\t\tNo color output, boring",
+		"     --no-request\t\t\tJust output urls",
 	}
 
 	fmt.Println(strings.Join(helper, "\n"))
@@ -311,6 +311,9 @@ func main() {
 
 	flag.StringVar(&o.Proxy, "proxy", "", "")
 	flag.StringVar(&o.Proxy, "x", "", "")
+
+	flag.StringVar(&o.Url, "url", "", "")
+	flag.StringVar(&o.Url, "u", "", "")
 
 	flag.Var(&o.Headers, "header", "")
 	flag.Var(&o.Headers, "H", "")
@@ -335,6 +338,11 @@ func main() {
 
 	flag.Parse()
 
+	if o.Url == "" {
+		showHelper()
+		os.Exit(1)
+	}
+
 	var wg sync.WaitGroup
 	var pg sync.WaitGroup
 
@@ -346,7 +354,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	o.Url = flag.Args()[0]
 	wg.Add(1)
 	go func() {
 		for req := range requests {
